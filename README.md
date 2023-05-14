@@ -12,3 +12,9 @@ Use the arrow keys to move the pieces and 'z' and 'x' to rotate them. The goal i
 2. Install the dependencies with `yarn`
 3. Run the project with `yarn dev`
 4. Open your browser and go to the specified adress (usually `localhost:5173`)
+
+## TODO
+
+- [ ] Handle wall kicks
+- [ ] Add a score system
+- [ ] Add a mobile version
