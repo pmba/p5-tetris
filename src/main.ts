@@ -7,6 +7,8 @@ window.ROWS = 20;
 window.SIZE = 20;
 
 let isPaused = false;
+let drawAtFrame = 5;
+let frameCount = 0;
 
 export function sketch(p: p5) {
   window.p5 = p;
@@ -35,23 +37,27 @@ export function sketch(p: p5) {
 
   p.setup = () => {
     p.createCanvas(COLS * SIZE + 1, ROWS * SIZE + 1);
-    setFPS(6);
+    setFPS(10);
 
     // Initialize field
     field.init();
   };
 
   p.draw = () => {
-    p.background(220);
+    p.background(220, 220, 220);
+
+    field.draw();
+    tetromino.draw();
+
+    frameCount = (frameCount + 1) % drawAtFrame;
+    if (frameCount < drawAtFrame - 1) return;
 
     if (!tetromino.canGoDown()) {
       tetromino.release();
       tetromino = Tetromino.random();
     }
 
-    field.draw();
     tetromino.update();
-    tetromino.draw();
 
     field.deleteFullRows();
   };

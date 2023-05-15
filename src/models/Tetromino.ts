@@ -40,52 +40,6 @@ export default class Tetromino {
     return new Tetromino(randomTetromino, Math.floor(COLS / 2 - side / 2), 0);
   }
 
-  public moveLeft() {
-    // From left to right check if there is a block and if it can move to the left
-
-    for (let i = 0; i < this.side; ++i) {
-      for (let j = 0; j < this.side; ++j) {
-        const y = this.position.y + i;
-        const x = this.position.x + j;
-
-        if (this.blocks[i][j] && this.blocks[i][j] !== " ") {
-          if (x <= 0 || field.isActive(x - 1, y)) {
-            return;
-          }
-
-          break;
-        }
-      }
-    }
-
-    this.position.x -= 1;
-  }
-
-  public moveRight() {
-    // From right to left check if there is a block and if it can move to the right
-
-    for (let i = 0; i < this.side; ++i) {
-      for (let j = this.side - 1; j >= 0; --j) {
-        const y = this.position.y + i;
-        const x = this.position.x + j;
-
-        if (this.blocks[i][j] && this.blocks[i][j] !== " ") {
-          if (x >= COLS - 1 || field.isActive(x + 1, y)) {
-            return;
-          }
-
-          break;
-        }
-      }
-    }
-
-    this.position.x += 1;
-  }
-
-  public update() {
-    this.position.y += 1;
-  }
-
   public draw() {
     p5.push();
     for (let i = 0; i < this.side; ++i) {
@@ -142,11 +96,71 @@ export default class Tetromino {
     }
   }
 
+  public update() {
+    this.position.y += 1;
+  }
+
+  private cleanDraw() {
+    p5.background(220, 220, 220);
+    field.draw();
+    this.draw();
+  }
+
+  public moveLeft() {
+    // From left to right check if there is a block and if it can move to the left
+
+    for (let i = 0; i < this.side; ++i) {
+      for (let j = 0; j < this.side; ++j) {
+        const y = this.position.y + i;
+        const x = this.position.x + j;
+
+        if (this.blocks[i][j] && this.blocks[i][j] !== " ") {
+          if (x <= 0 || field.isActive(x - 1, y)) {
+            return;
+          }
+
+          break;
+        }
+      }
+    }
+
+    this.position.x -= 1;
+
+    this.cleanDraw();
+  }
+
+  public moveRight() {
+    // From right to left check if there is a block and if it can move to the right
+
+    for (let i = 0; i < this.side; ++i) {
+      for (let j = this.side - 1; j >= 0; --j) {
+        const y = this.position.y + i;
+        const x = this.position.x + j;
+
+        if (this.blocks[i][j] && this.blocks[i][j] !== " ") {
+          if (x >= COLS - 1 || field.isActive(x + 1, y)) {
+            return;
+          }
+
+          break;
+        }
+      }
+    }
+
+    this.position.x += 1;
+
+    this.cleanDraw();
+  }
+
   public rotateClockWise() {
     rotateClockWise(this.blocks);
+
+    this.cleanDraw();
   }
 
   public rotateCounterClockWise() {
     rotateCounterClockWise(this.blocks);
+
+    this.cleanDraw();
   }
 }
